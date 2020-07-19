@@ -12,7 +12,6 @@ Created on Sat Jul 18 10:04:49 2020
 
 import json
 from datetime import timedelta, date
-import matplotlib.pyplot as plt
 
 
 def daterange(start_date, end_date):
@@ -23,8 +22,7 @@ def daterange(start_date, end_date):
 with open('data.json') as f:
     perf = json.load(f)
 rates=perf['rates']
-print("Enter currency symbol (eg: INR for Indian Rupees)")
-sym=input()
+sym="INR"
 print("Enter start date (YYYY-MM-DD)")
 y,m,d=map(int,input().split("-"))
 start_date = date(y,m,d)
@@ -37,13 +35,19 @@ for single_date in daterange(start_date, end_date):
     try:
         l1.append(rates[single_date.strftime("%Y-%m-%d")][sym])
         date.append(single_date.strftime("%Y-%m-%d"))
-        
     except:
        None
-plt.figure(figsize=(25,15))       
-plt.plot(date,l1,label=sym)
-plt.xlabel("Dates in range of entered dates")
-plt.xticks(rotation=90)
-plt.ylabel("INR exchange rates")
-plt.legend(loc="upper left")
-plt.show()  
+
+mx,mn=max(l1),min(l1)
+f=open("graph.svg","w")
+f.write('''<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">\n''')
+f.write('''<rect width="100%" height="100%" fill="white" />\n''')
+f.write("<text x=\"70\" y=\"15\" fill=\"red\">"+sym+"Exchange rates (Base EUR)"+"</text>\n")
+for i in range(len(l1)):
+    a=350-150*(l1[i]-mn)/(mx-mn)
+    b=100+i*10
+    f.write('''<circle cx='''+'''"'''+str(b)+'''"'''+''' cy='''+'''"'''+str(a)+'''"'''+''' r="3"/> \n''')
+    f.write("<text x=\"" + str(b-5) + "\" y=\"400\" fill=\"red\" style=\"font: 12px sans-serif;\" transform=\"rotate(90,"+str(b-5)+",400)\">"+date[i]+"</text>")
+f.write("</svg>")    
+f=open("graph.svg","r")
+print(f.read())
