@@ -45,22 +45,42 @@ for single_date in daterange(start_date, end_date):
 mx,mn=max(l1),min(l1)
 mx1,mn1=max(l2),min(l2)
 f=open("graph.svg","w")
-f.write('''<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">\n''')
+f.write('''<svg width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">\n''')
 f.write('''<rect width="100%" height="100%" fill="white" />\n''')
-f.write("<text x=\"70\" y=\"15\" fill=\"red\">"+sym+"Exchange rates (Base EUR)"+"</text>\n")
+f.write("<text x=\"100\" y=\"15\" fill=\"red\">"+sym+"Exchange rates (Base EUR)"+"</text>\n")
+f.write("<text x=\"100\" y=\"30\" fill=\"green\">"+"Start Date: "+str(start_date)+"</text>\n")
+f.write("<text x=\"100\" y=\"45\" fill=\"green\">"+"End Date: "+str(end_date)+"</text>\n")
+f.write("<text x=\"100\" y=\"60\" fill=\"green\">"+"Max Rate: "+str(mx)+"</text>\n")
+f.write("<text x=\"100\" y=\"75\" fill=\"green\">"+"Min Rate: "+str(mn)+"</text>\n")
+x,y=[],[]
 for i in range(len(l1)):
     a=350-150*(l1[i]-mn)/(mx-mn)
-    b=100+i*10
+    b=100+i*15
+    x.append(b)
+    y.append(a)    
     f.write('''<circle cx='''+'''"'''+str(b)+'''"'''+''' cy='''+'''"'''+str(a)+'''"'''+''' r="3"/> \n''')
     f.write("<text x=\"" + str(b-5) + "\" y=\"400\" fill=\"red\" style=\"font: 12px sans-serif;\" transform=\"rotate(90,"+str(b-5)+",400)\">"+date[i]+"</text>")
+for i in range(len(x)-1):
+    f.write("<line x1=\"" + str(x[i]) + "\" y1=\"" + str(y[i]) +"\" x2=\"" + str(x[i+1]) + "\" y2=\"" + str(y[i+1]) + "\" stroke=\"" + str("black") + "\" />")
+
 f.write("</svg>")    
 f=open("graph1.svg","w")
-f.write('''<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">\n''')
+f.write('''<svg width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">\n''')
 f.write('''<rect width="100%" height="100%" fill="white" />\n''')
-f.write("<text x=\"70\" y=\"15\" fill=\"red\">"+sym2+"Exchange rates (Base EUR)"+"</text>\n")
+f.write("<text x=\"100\" y=\"15\" fill=\"red\">"+sym2+"Exchange rates (Base EUR)"+"</text>\n")
+f.write("<text x=\"100\" y=\"30\" fill=\"green\">"+"Start Date: "+str(start_date)+"</text>\n")
+f.write("<text x=\"100\" y=\"45\" fill=\"green\">"+"End Date: "+str(end_date)+"</text>\n")
+f.write("<text x=\"100\" y=\"60\" fill=\"green\">"+"Max Rate: "+str(mx1)+"</text>\n")
+f.write("<text x=\"100\" y=\"75\" fill=\"green\">"+"Min Rate: "+str(mn1)+"</text>\n")
+x,y=[],[]
 for i in range(len(l2)):
     a=350-150*(l2[i]-mn1)/(mx1-mn1)
-    b=100+i*10
+    b=100+i*15
+    x.append(b)
+    y.append(a)
     f.write('''<circle cx='''+'''"'''+str(b)+'''"'''+''' cy='''+'''"'''+str(a)+'''"'''+''' r="3"/> \n''')
     f.write("<text x=\"" + str(b-5) + "\" y=\"400\" fill=\"red\" style=\"font: 12px sans-serif;\" transform=\"rotate(90,"+str(b-5)+",400)\">"+date[i]+"</text>")
+for i in range(len(x)-1):
+    f.write("<line x1=\"" + str(x[i]) + "\" y1=\"" + str(y[i]) +"\" x2=\"" + str(x[i+1]) + "\" y2=\"" + str(y[i+1]) + "\" stroke=\"" + str("black") + "\" />")
+
 f.write("</svg>")    
